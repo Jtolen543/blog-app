@@ -1,6 +1,4 @@
 from datetime import date
-
-import requests
 from flask import Flask, abort, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
@@ -11,8 +9,6 @@ from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text, ForeignKey
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-import psycopg2
-import sqlite3
 # Import your forms from the forms.py
 from forms import CreatePostForm, RegisterForm, LoginForm, EditForm
 from dotenv import load_dotenv
