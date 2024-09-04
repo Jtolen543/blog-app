@@ -1,4 +1,6 @@
 from datetime import date
+
+import requests
 from flask import Flask, abort, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
@@ -45,7 +47,6 @@ def admin_user(func):
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
-
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 db = SQLAlchemy(model_class=Base)
