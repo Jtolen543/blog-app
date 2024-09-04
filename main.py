@@ -10,8 +10,9 @@ from sqlalchemy import Integer, String, Text, ForeignKey
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 # Import your forms from the forms.py
-from forms import CreatePostForm, RegisterForm, LoginForm, EditForm
+from forms import CreatePostForm, RegisterForm, LoginForm, EditForm, ContactForm
 from dotenv import load_dotenv
+import smtplib
 import os
 
 load_dotenv()
@@ -208,9 +209,20 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/contact")
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
-    return render_template("contact.html")
+    form = ContactForm()
+    if form.validate_on_submit():
+        connection = smtplib.SMTP(host="smtp.gmail.com", port=587)
+        connection.starttls()
+        connection.login(user=os.environ.get("AUTH_USER"), password=os.environ.get("PASS_USER"))
+        connection.sendmail(from_addr=form.email.data,
+                            to_addrs=os.environ.get("EMAIL_USER"),
+                            msg=f"Subject: Contact Requested from {form.name.data.title()}\n\n"
+                                f"Email: {form.email.data}\nName: {form.name.data}\nPhone Number: {form.phone.data}"
+                                f"\nMessage: {form.message.data}")
+        return render_template("contact.html", form=form, msg_sent=True)
+    return render_template("contact.html", form=form)
 
 
 if __name__ == "__main__":
