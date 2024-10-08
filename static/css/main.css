@@ -1,0 +1,113 @@
+
+.chat-button {
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    border-style: none;
+    background-color: transparent;
+}
+
+.chatbox {
+    display: none;
+    position: fixed;
+    bottom: 120px;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    z-index: 1;
+    flex-direction: column;
+    font-style: normal;
+}
+
+#chat-content {
+    flex-grow: 1;
+    background-color: #d6d5d4;
+    -webkit-box-shadow: 2px 2px 2px #e3e2e1;
+    box-shadow: 2px 2px 2px #e3e2e1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+
+    /* Hide scrollbar */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+#chat-content::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
+
+.chatbox * {
+    padding: 12px;
+}
+
+.chat-message {
+    display: flex;
+    align-items: center;
+}
+
+.conversation {
+    font-size: .9rem;
+    background-color: white;
+    border-radius: 6px;
+    width: 80%;
+    font-weight: bold;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.user {
+    background-color: #2c79f5;
+    color: white;
+    align-self: flex-end;
+    text-align: right;
+    border-radius: 15px 15px 0 15px;
+}
+
+.bot {
+    color: black;
+    align-self: flex-start;
+    text-align: left;
+    border-radius: 15px 15px 15px 0;
+}
+
+.chat-input {
+    border-radius: 15px;
+    padding: 4px;
+    width: 100%;
+    font-size: 1rem;
+    border-style: none;
+    height: 50%;
+    vertical-align: center;
+}
+
+.chat-button:hover svg{
+    transition: .2 ease;
+    fill: #52aaf7;
+}
+
+.send-message {
+    z-index: 2;
+    background-color: transparent;
+    border-style: none;
+}
+
+.chat-button svg {
+    transition: fill ease .2s;
+}
+
+.send-message svg {
+    transition: fill ease .2s;
+    fill: white;
+}
+
+.send-message:hover svg {
+    transition: fill ease .2s;
+    fill: black;
+}

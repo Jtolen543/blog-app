@@ -1,5 +1,5 @@
 from datetime import date
-from flask import Flask, abort, render_template, redirect, url_for, flash
+from flask import Flask, abort, render_template, redirect, url_for, flash, request, jsonify
 from flask_bootstrap import Bootstrap5
 from flask_ckeditor import CKEditor
 from flask_gravatar import Gravatar
@@ -9,19 +9,20 @@ from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text, ForeignKey
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-# Import your forms from the forms.py
 from forms import CreatePostForm, RegisterForm, LoginForm, EditForm, ContactForm
 from dotenv import load_dotenv
 import smtplib
 import os
+from chatbot import ChatBot
+
 
 load_dotenv()
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("KEY")
 ckeditor = CKEditor(app)
 Bootstrap5(app)
-
+open_ai_key = os.environ.get("OPEN_AI_KEY")
+chat_bot = ChatBot(open_ai_key)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -44,6 +45,7 @@ def admin_user(func):
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
+
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 db = SQLAlchemy(model_class=Base)
@@ -225,5 +227,15 @@ def contact():
     return render_template("contact.html", form=form)
 
 
+@app.route('/message', methods=['POST'])
+def receive_message():
+    data = request.get_json()
+    message = data.get('message', '')
+
+    messages = chat_bot.run_bot(message)
+    response = {"reply": f"{messages.data[0].content[0].text.value}"}
+    return jsonify(response)
+
+
 if __name__ == "__main__":
-    app.run(debug=False, port=5002)
+    app.run(debug=True, port=5002)
